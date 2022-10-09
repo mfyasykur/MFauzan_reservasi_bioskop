@@ -2,10 +2,11 @@ package edu.Binar.challenge.CinemaTicketReservation.service;
 
 import edu.Binar.challenge.CinemaTicketReservation.exception.ResourceNotFoundException;
 import edu.Binar.challenge.CinemaTicketReservation.model.User;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
+@Service
 public interface UserService {
 
     List<User> getAllUsers();

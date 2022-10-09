@@ -72,6 +72,6 @@ public class UserController {
     public ResponseEntity<String> deleteUser(@PathVariable(value = "userId") Long userId) throws ResourceNotFoundException {
         userService.deleteUser(userId);
 
-        return ResponseEntity.ok("userId(" + userId + ") deleted successfully");
+        return ResponseEntity.ok("User with ID(" + userId + ") deleted successfully");
     }
 }

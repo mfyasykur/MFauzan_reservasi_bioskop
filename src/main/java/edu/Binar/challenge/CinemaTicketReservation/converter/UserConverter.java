@@ -4,7 +4,6 @@ import edu.Binar.challenge.CinemaTicketReservation.dto.UserDto;
 import edu.Binar.challenge.CinemaTicketReservation.model.User;
 import org.modelmapper.ModelMapper;
 
-import java.util.List;
 
 public class UserConverter {
 

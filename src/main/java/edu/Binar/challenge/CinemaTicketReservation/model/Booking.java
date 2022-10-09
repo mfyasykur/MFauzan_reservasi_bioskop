@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 @Setter
 @Getter
@@ -24,7 +24,7 @@ public class Booking {
     private int numberOfSeats;
 
     @Column(name = "timeStamp", nullable = false)
-    private ZonedDateTime timeStamp;
+    private LocalDateTime timeStamp;
 
     public enum bookingStatus {
         success,

@@ -15,50 +15,50 @@
     <queryString language="SQL">
         <![CDATA[SELECT * FROM invoices]]>
     </queryString>
-    <field name="created_at" class="java.sql.Timestamp">
-        <property name="com.jaspersoft.studio.field.name" value="created_at"/>
-        <property name="com.jaspersoft.studio.field.label" value="created_at"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="invoices"/>
+    <field name="createdAt" class="java.time.LocalDateTime">
+<!--        <property name="com.jaspersoft.studio.field.name" value="created_at"/>-->
+<!--        <property name="com.jaspersoft.studio.field.label" value="created_at"/>-->
+<!--        <property name="com.jaspersoft.studio.field.tree.path" value="invoices"/>-->
     </field>
-    <field name="date" class="java.sql.Timestamp">
-        <property name="com.jaspersoft.studio.field.name" value="date"/>
-        <property name="com.jaspersoft.studio.field.label" value="date"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="invoices"/>
+    <field name="date" class="java.time.LocalDate">
+<!--        <property name="com.jaspersoft.studio.field.name" value="date"/>-->
+<!--        <property name="com.jaspersoft.studio.field.label" value="date"/>-->
+<!--        <property name="com.jaspersoft.studio.field.tree.path" value="invoices"/>-->
     </field>
     <field name="hall" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.name" value="hall"/>
-        <property name="com.jaspersoft.studio.field.label" value="hall"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="invoices"/>
+<!--        <property name="com.jaspersoft.studio.field.name" value="hall"/>-->
+<!--        <property name="com.jaspersoft.studio.field.label" value="hall"/>-->
+<!--        <property name="com.jaspersoft.studio.field.tree.path" value="invoices"/>-->
     </field>
-    <field name="invoice_number" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.name" value="invoice_number"/>
-        <property name="com.jaspersoft.studio.field.label" value="invoice_number"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="invoices"/>
+    <field name="invoiceNumber" class="java.lang.String">
+<!--        <property name="com.jaspersoft.studio.field.name" value="invoice_number"/>-->
+<!--        <property name="com.jaspersoft.studio.field.label" value="invoice_number"/>-->
+<!--        <property name="com.jaspersoft.studio.field.tree.path" value="invoices"/>-->
     </field>
     <field name="price" class="java.math.BigDecimal">
-        <property name="com.jaspersoft.studio.field.name" value="price"/>
-        <property name="com.jaspersoft.studio.field.label" value="price"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="invoices"/>
+<!--        <property name="com.jaspersoft.studio.field.name" value="price"/>-->
+<!--        <property name="com.jaspersoft.studio.field.label" value="price"/>-->
+<!--        <property name="com.jaspersoft.studio.field.tree.path" value="invoices"/>-->
     </field>
     <field name="row" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.name" value="row"/>
-        <property name="com.jaspersoft.studio.field.label" value="row"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="invoices"/>
+<!--        <property name="com.jaspersoft.studio.field.name" value="row"/>-->
+<!--        <property name="com.jaspersoft.studio.field.label" value="row"/>-->
+<!--        <property name="com.jaspersoft.studio.field.tree.path" value="invoices"/>-->
     </field>
-    <field name="seat_number" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.name" value="seat_number"/>
-        <property name="com.jaspersoft.studio.field.label" value="seat_number"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="invoices"/>
+    <field name="seatNumber" class="java.lang.String">
+<!--        <property name="com.jaspersoft.studio.field.name" value="seat_number"/>-->
+<!--        <property name="com.jaspersoft.studio.field.label" value="seat_number"/>-->
+<!--        <property name="com.jaspersoft.studio.field.tree.path" value="invoices"/>-->
     </field>
     <field name="time" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.name" value="time"/>
-        <property name="com.jaspersoft.studio.field.label" value="time"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="invoices"/>
+<!--        <property name="com.jaspersoft.studio.field.name" value="time"/>-->
+<!--        <property name="com.jaspersoft.studio.field.label" value="time"/>-->
+<!--        <property name="com.jaspersoft.studio.field.tree.path" value="invoices"/>-->
     </field>
     <field name="title" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.name" value="title"/>
-        <property name="com.jaspersoft.studio.field.label" value="title"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="invoices"/>
+<!--        <property name="com.jaspersoft.studio.field.name" value="title"/>-->
+<!--        <property name="com.jaspersoft.studio.field.label" value="title"/>-->
+<!--        <property name="com.jaspersoft.studio.field.tree.path" value="invoices"/>-->
     </field>
     <background>
         <band splitType="Stretch"/>
@@ -170,7 +170,7 @@
                 <textElement textAlignment="Left" verticalAlignment="Middle">
                     <font size="12" isBold="true"/>
                 </textElement>
-                <textFieldExpression><![CDATA[$F{seat_number}]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{seatNumber}]]></textFieldExpression>
             </textField>
             <textField>
                 <reportElement x="40" y="60" width="100" height="30" uuid="e94ff4b0-a9b1-4e77-9aa5-80f42b0f98a9">
@@ -186,18 +186,18 @@
     <pageFooter>
         <band height="77" splitType="Stretch">
             <textField>
-                <reportElement x="61" y="20" width="137" height="30" uuid="6820e22e-44a5-467f-93a0-6340762ba21d"/>
+                <reportElement x="19" y="20" width="222" height="30" uuid="6820e22e-44a5-467f-93a0-6340762ba21d"/>
                 <textElement textAlignment="Center" verticalAlignment="Middle">
                     <font size="12"/>
                 </textElement>
-                <textFieldExpression><![CDATA[$F{invoice_number}]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{invoiceNumber}]]></textFieldExpression>
             </textField>
             <textField>
-                <reportElement x="79" y="47" width="100" height="30" uuid="e6a0d26e-455e-4c10-8f8f-d27e183b6e13"/>
+                <reportElement x="18" y="47" width="222" height="30" uuid="e6a0d26e-455e-4c10-8f8f-d27e183b6e13"/>
                 <textElement textAlignment="Center" verticalAlignment="Middle">
                     <font size="12"/>
                 </textElement>
-                <textFieldExpression><![CDATA[$F{created_at}]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{createdAt}]]></textFieldExpression>
             </textField>
         </band>
     </pageFooter>
