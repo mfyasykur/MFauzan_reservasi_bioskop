@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MyCinema</title>
+    <link th:href="@{/css/invoice.css}" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <section class="invoice-form-section">
+        <div class="container">
+            <div class="card">
+                <form th:action="@{/invoice}" method="post" class="form-control">
+                    <div class="invoice_number-control">
+                        <input type="text" th:name="text">
+
+                    </div>
+                    <div class="file-type-control">
+                        <select th:name="fileFormat">
+                            <option th:value="pdf" th:text="PDF"></option>
+
+                        </select>
+                    </div>
+                    <div class="generate-btn">
+                        <input type="submit" class="btn-primary" value="Generate invoice">
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <section class="invoice-section">
+        <div class="container">
+            <div class="card" th:each="invoice : ${invoices}">
+                <p th:text="${invoice.invoice_id}"></p>
+                <p th:text="${invoice.invoice_number}"></p>
+                <p th:text="${invoice.title}"></p>
+                <p th:text="${invoice.date}"></p>
+                <p th:text="${invoice.time}"></p>
+                <p th:text="${invoice.row}"></p>
+                <p th:text="${invoice.seat_number}"></p>
+                <p th:text="${invoice.hall}"></p>
+                <p th:text="${invoice.price}"></p>
+                <p th:text="${invoice.created_at}"></p>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

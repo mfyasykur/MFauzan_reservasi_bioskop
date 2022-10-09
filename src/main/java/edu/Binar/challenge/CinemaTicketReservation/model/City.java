@@ -19,13 +19,13 @@ public class City {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long cityId;
 
-    @Column(name = "name")
+    @Column(name = "name", length = 64, nullable = false)
     private String name;
 
-    @Column(name = "state")
+    @Column(name = "state", length = 64)
     private String state;
 
-    @Column(name = "zipCode")
+    @Column(name = "zipCode", length = 16)
     private String zipCode;
 
     @Override

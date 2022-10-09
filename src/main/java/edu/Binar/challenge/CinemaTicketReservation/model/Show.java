@@ -6,8 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.ZonedDateTime;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Setter
 @Getter
@@ -21,21 +21,21 @@ public class Show {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long showId;
 
-    @Column(name = "date")
-    private Date date;
+    @Column(name = "date", nullable = false)
+    private LocalDate date;
 
-    @Column(name = "startTime")
-    private ZonedDateTime startTime;
+    @Column(name = "startTime", nullable = false)
+    private LocalDateTime startTime;
 
-    @Column(name = "endTime")
-    private ZonedDateTime endTime;
+    @Column(name = "endTime", nullable = false)
+    private LocalDateTime endTime;
 
     @ManyToOne
-    @JoinColumn(name = "cinemaHallId")
+    @JoinColumn(name = "cinemaHallId", nullable = false)
     private CinemaHall cinemaHall;
 
     @ManyToOne
-    @JoinColumn(name = "movieId")
+    @JoinColumn(name = "movieId", nullable = false)
     private Movie movie;
 
     @Override

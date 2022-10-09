@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/cinema-v1")
+@RequestMapping("/api/mycinema-v1")
 public class PaymentController {
 
     @Autowired
@@ -46,8 +46,6 @@ public class PaymentController {
 
         payment.setAmount(paymentDetails.getAmount());
         payment.setTimeStamp(paymentDetails.getTimeStamp());
-        payment.setDiscountCouponId(paymentDetails.getDiscountCouponId());
-        payment.setRemoteTransactionId(paymentDetails.getRemoteTransactionId());
         payment.setMethod(paymentDetails.getMethod());
         payment.setBooking(paymentDetails.getBooking());
         final Payment updatedPayment = paymentRepository.save(payment);

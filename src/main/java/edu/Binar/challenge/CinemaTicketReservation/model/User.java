@@ -19,19 +19,19 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userId;
 
-    @Column(name = "name")
+    @Column(name = "name", length = 64, nullable = false)
     private String name;
 
-    @Column(name = "username")
+    @Column(name = "username", length = 64, nullable = false)
     private String username;
 
-    @Column(name = "email")
+    @Column(name = "email", length = 64, nullable = false)
     private String email;
 
-    @Column(name = "password")
+    @Column(name = "password", length = 20, nullable = false)
     private String password;
 
-    @Column(name = "phone")
+    @Column(name = "phone", length = 16, nullable = false)
     private String phone;
 
     @Override

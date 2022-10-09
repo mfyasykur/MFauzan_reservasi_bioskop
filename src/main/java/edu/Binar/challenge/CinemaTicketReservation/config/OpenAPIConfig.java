@@ -12,8 +12,9 @@ public class OpenAPIConfig {
     public OpenAPI cinemaOpenAPI(){
         return new OpenAPI()
                 .info(new Info()
-                        .title("MyCinema Open API")
-                        .description("Open API aplikasi MyCinema")
+                        .title("MyCinema REST API")
+                        .description("REST API aplikasi MyCinema")
+                        .version("/api/mycinema-v1")
                 );
     }
 }

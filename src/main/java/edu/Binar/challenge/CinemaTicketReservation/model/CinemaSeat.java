@@ -19,7 +19,7 @@ public class CinemaSeat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long cinemaSeatId;
 
-    @Column(name = "seatNumber")
+    @Column(name = "seatNumber", nullable = false)
     private int seatNumber;
 
     public enum seatType {
@@ -28,11 +28,11 @@ public class CinemaSeat {
     }
 
     @Enumerated
-    @Column(name = "type")
+    @Column(name = "type", nullable = false)
     private seatType type;
 
     @ManyToOne
-    @JoinColumn(name = "cinemaHallId")
+    @JoinColumn(name = "cinemaHallId", nullable = false)
     private CinemaHall cinemaHall;
 
     @Override

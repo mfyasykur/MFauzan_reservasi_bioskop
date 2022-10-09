@@ -29,16 +29,16 @@ public class Movie {
     @Column(name = "duration", nullable = false)
     private int duration;
 
-    @Column(name = "language", nullable = false)
+    @Column(name = "language", length = 16, nullable = false)
     private String language;
 
     @Column(name = "release_date", nullable = false)
     private Date releaseDate;
 
-    @Column(name = "country", nullable = false)
+    @Column(name = "country", length = 64, nullable = false)
     private String country;
 
-    @Column(name = "genre", nullable = false)
+    @Column(name = "genre", length = 20, nullable = false)
     private String genre;
 
     public enum showingStatus {

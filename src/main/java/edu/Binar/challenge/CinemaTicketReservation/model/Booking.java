@@ -20,10 +20,10 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long bookingId;
 
-    @Column(name = "numberOfSeats")
+    @Column(name = "numberOfSeats", nullable = false)
     private int numberOfSeats;
 
-    @Column(name = "timeStamp")
+    @Column(name = "timeStamp", nullable = false)
     private ZonedDateTime timeStamp;
 
     public enum bookingStatus {
@@ -32,15 +32,15 @@ public class Booking {
     }
 
     @Enumerated
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     private bookingStatus status;
 
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "userId", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "showId")
+    @JoinColumn(name = "showId", nullable = false)
     private Show show;
 
     @Override

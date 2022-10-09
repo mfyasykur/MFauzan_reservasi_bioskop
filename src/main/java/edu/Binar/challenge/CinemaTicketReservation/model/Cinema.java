@@ -19,14 +19,14 @@ public class Cinema {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long cinemaId;
 
-    @Column(name = "name")
+    @Column(name = "name", length = 64, nullable = false)
     private String name;
 
-    @Column(name = "totalCinemaHalls")
+    @Column(name = "totalCinemaHalls", nullable = false)
     private int totalCinemaHalls;
 
     @ManyToOne
-    @JoinColumn(name = "cityId")
+    @JoinColumn(name = "cityId", nullable = false)
     private City city;
 
     @Override

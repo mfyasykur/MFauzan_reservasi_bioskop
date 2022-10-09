@@ -21,22 +21,22 @@ public class ShowSeat {
     }
 
     @Enumerated
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     private showSeatStatus status;
 
-    @Column(name = "price")
+    @Column(name = "price", nullable = false)
     private Number price;
 
     @ManyToOne
-    @JoinColumn(name = "cinemaSeatId")
+    @JoinColumn(name = "cinemaSeatId", nullable = false)
     private CinemaSeat cinemaSeat;
 
     @ManyToOne
-    @JoinColumn(name = "showId")
+    @JoinColumn(name = "showId", nullable = false)
     private Show show;
 
     @ManyToOne
-    @JoinColumn(name = "bookingId")
+    @JoinColumn(name = "bookingId", nullable = false)
     private Booking booking;
 
     @Override

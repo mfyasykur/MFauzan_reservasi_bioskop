@@ -1,69 +1,77 @@
 package edu.Binar.challenge.CinemaTicketReservation.controller;
 
+import edu.Binar.challenge.CinemaTicketReservation.converter.UserConverter;
+import edu.Binar.challenge.CinemaTicketReservation.dto.UserDto;
 import edu.Binar.challenge.CinemaTicketReservation.exception.ResourceNotFoundException;
 import edu.Binar.challenge.CinemaTicketReservation.model.User;
-import edu.Binar.challenge.CinemaTicketReservation.repository.UserRepository;
+import edu.Binar.challenge.CinemaTicketReservation.service.UserService;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @RestController
-@RequestMapping("/api/cinema-v1")
+@RequestMapping("/api/mycinema-v1")
 public class UserController {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @GetMapping("/users/")
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserDto> getAllUsers() {
+        return userService.getAllUsers().stream().map(user -> modelMapper.map(user, UserDto.class))
+                .collect(Collectors.toList());
     }
 
-    @GetMapping("/users/{userId}")
-    public ResponseEntity<User> getUserById(@PathVariable(value = "userId") Long userId)
-            throws ResourceNotFoundException {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found for this id :: " + userId));
+//    @GetMapping("/users/")
+//    public List<User> getAllUsers() {
+//        return userRepository.findAll();
+//    }
 
-        return ResponseEntity.ok().body(user);
+    @GetMapping("/users/{userId}")
+    public ResponseEntity<UserDto> getUserById(@PathVariable(value = "userId") Long userId) throws ResourceNotFoundException {
+        User user = userService.getUserById(userId);
+        UserDto userResponse = UserConverter.convertEntityToDto(user);
+
+        return ResponseEntity.ok().body(userResponse);
     }
 
     @PostMapping("/users")
-    public User createUser(@Valid @RequestBody User user){
-        return userRepository.save(user);
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto) {
+        User userRequest = UserConverter.convertDtoToEntity(userDto);
+        User user = userService.createUser(userRequest);
+
+        UserDto userResponse = UserConverter.convertEntityToDto(user);
+
+        return new ResponseEntity<UserDto>(userResponse, HttpStatus.CREATED);
     }
 
     @PutMapping("/users/{userId}")
-    public ResponseEntity<User> updateUser(@PathVariable(value = "userId") Long userId, @Valid @RequestBody User userDetails)
-            throws ResourceNotFoundException {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found for this id :: " + userId));
+    public ResponseEntity<UserDto> updateUser(@PathVariable(value = "userId") Long userId, @Valid @RequestBody UserDto userDto) throws ResourceNotFoundException {
+        User userRequest = UserConverter.convertDtoToEntity(userDto);
+        User user = userService.updateUser(userId, userRequest);
 
-        user.setName(userDetails.getName());
-        user.setUsername(userDetails.getUsername());
-        user.setEmail(userDetails.getEmail());
-        user.setPassword(userDetails.getPassword());
-        user.setPhone(userDetails.getPhone());
-        final User updatedUser = userRepository.save(user);
+        UserDto userResponse = UserConverter.convertEntityToDto(user);
 
-        return ResponseEntity.ok(updatedUser);
+        return ResponseEntity.ok().body(userResponse);
     }
 
     @DeleteMapping("/users/{userId}")
-    public Map<String, Boolean> deleteUser(@PathVariable(value = "userId") Long userId)
-            throws ResourceNotFoundException {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found for this id :: " + userId));
+    public ResponseEntity<String> deleteUser(@PathVariable(value = "userId") Long userId) throws ResourceNotFoundException {
+        userService.deleteUser(userId);
 
-        userRepository.delete(user);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-
-        return response;
+        return ResponseEntity.ok("userId(" + userId + ") deleted successfully");
     }
 }

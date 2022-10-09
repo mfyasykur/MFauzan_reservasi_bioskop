@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/cinema-v1")
+@RequestMapping("/api/mycinema-v1")
 public class ShowController {
 
     @Autowired

@@ -16,17 +16,11 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long paymentId;
 
-    @Column(name = "amount")
+    @Column(name = "amount", nullable = false)
     private Number amount;
 
-    @Column(name = "timeStamp")
+    @Column(name = "timeStamp", nullable = false)
     private ZonedDateTime timeStamp;
-
-    @Column(name = "discountCouponId")
-    private int discountCouponId;
-
-    @Column(name = "remoteTransactionId")
-    private int remoteTransactionId;
 
     public enum paymentMethod {
         cash,
@@ -44,6 +38,6 @@ public class Payment {
 
     @Override
     public String toString(){
-        return "Payment [paymentId=" + paymentId + ", amount=" + amount + ", timeStamp=" + timeStamp + ", discountCouponId=" + discountCouponId + ", remoteTransactionId=" + remoteTransactionId + ", method=" + method + ", bookingId=" + booking + "]";
+        return "Payment [paymentId=" + paymentId + ", amount=" + amount + ", timeStamp=" + timeStamp + ", method=" + method + ", bookingId=" + booking + "]";
     }
 }
