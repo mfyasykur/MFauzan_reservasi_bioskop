@@ -130,9 +130,9 @@ Table Invoice {
 }
 ```
 # API Documentation via Swagger
-![Swagger](https://gitlab.com/km3-bej-1/challenge/04-08/muhammadfauzanyasykur_reservasi_bioskop/-/raw/main/image/MyCinemaAPI-Swagger.png?raw=true)
+![Swagger](https://gitlab.com/km3-bej-1/challenge/04-08/muhammadfauzanyasykur_reservasi_bioskop/-/raw/develop/image/MyCinemaAPI-Swagger.png?raw=true)
 
 # Generate Invoice PDF via Jaspersoft
-![Invoice](https://gitlab.com/km3-bej-1/challenge/04-08/muhammadfauzanyasykur_reservasi_bioskop/-/raw/main/image/MyCinema-InvoiceTicket.png?raw=true)
+![Invoice](https://gitlab.com/km3-bej-1/challenge/04-08/muhammadfauzanyasykur_reservasi_bioskop/-/raw/develop/image/MyCinema-InvoiceTicket.png?raw=true)
 
-![Invoice](https://gitlab.com/km3-bej-1/challenge/04-08/muhammadfauzanyasykur_reservasi_bioskop/-/raw/main/generated-invoices/invoice-MYCNM-001.pdf?raw=true)
+![Invoice](https://gitlab.com/km3-bej-1/challenge/04-08/muhammadfauzanyasykur_reservasi_bioskop/-/raw/develop/generated-invoices/invoice-MYCNM-001.pdf?raw=true)
