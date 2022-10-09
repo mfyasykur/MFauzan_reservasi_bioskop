@@ -1,8 +1,10 @@
-# MyCinema ERD
+# MyCinema REST API
+
+# ERD
 
 ![ERD](https://gitlab.com/km3-bej-1/challenge/04-08/muhammadfauzanyasykur_reservasi_bioskop/-/raw/main/image/Reservasi%20Tiket%20Bioskop.png?raw=true)
 
-Code:
+Details:
 ```
 Table User {
   userID int [pk, increment]
@@ -104,8 +106,6 @@ Table Payment {
   paymentID int [pk]
   amount numeric
   timeStamp datetime
-  discountCouponID int
-  remoteTransactionID int
   method Payment.paymentMethod
   bookingID int [ref: > Booking.bookingID]
 }
@@ -115,4 +115,24 @@ Enum Payment.paymentMethod {
   bank
   eWallet
 }
+
+Table Invoice {
+  invoiceId int [pk]
+  invoiceNumber varchar(64)
+  title varchar(64)
+  date date
+  time varchar(8)
+  row varchar(2)
+  seatNumber varchar(8)
+  hall varchar(2)
+  price double
+  createdAt timeStamp
+}
 ```
+# API Documentation via Swagger
+![Swagger](https://gitlab.com/km3-bej-1/challenge/04-08/muhammadfauzanyasykur_reservasi_bioskop/-/raw/main/image/MyCinemaAPI-Swagger.png?raw=true)
+
+# Generate Invoice PDF via Jaspersoft
+![Invoice](https://gitlab.com/km3-bej-1/challenge/04-08/muhammadfauzanyasykur_reservasi_bioskop/-/raw/main/image/MyCinema-InvoiceTicket.png?raw=true)
+
+![Invoice](https://gitlab.com/km3-bej-1/challenge/04-08/muhammadfauzanyasykur_reservasi_bioskop/-/raw/main/generated-invoices/invoice-MYCNM-001.pdf?raw=true)
