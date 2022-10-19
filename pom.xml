@@ -14,7 +14,7 @@
 	<name>Cinema-Ticket-Reservation</name>
 	<description>Program API Reservasi Tiket Bioskop</description>
 	<properties>
-		<java.version>19</java.version>
+		<java.version>14</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
