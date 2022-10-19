@@ -2,7 +2,7 @@
 
 # ERD
 
-![ERD](https://gitlab.com/km3-bej-1/challenge/04-08/muhammadfauzanyasykur_reservasi_bioskop/-/raw/main/image/Reservasi%20Tiket%20Bioskop.png?raw=true)
+![ERD](https://github.com/mfyasykur/MuhammadFauzanYasykur_reservasi_bioskop/blob/main/image/Reservasi%20Tiket%20Bioskop.png?raw=true)
 
 Details:
 ```
@@ -130,9 +130,9 @@ Table Invoice {
 }
 ```
 # API Documentation via Swagger
-![Swagger](https://gitlab.com/km3-bej-1/challenge/04-08/muhammadfauzanyasykur_reservasi_bioskop/-/raw/develop/image/MyCinemaAPI-Swagger.png?raw=true)
+![Swagger](https://github.com/mfyasykur/MuhammadFauzanYasykur_reservasi_bioskop/blob/main/image/MyCinemaAPI-Swagger.png?raw=true)
 
-# Generate Invoice PDF via Jaspersoft
-![Invoice](https://gitlab.com/km3-bej-1/challenge/04-08/muhammadfauzanyasykur_reservasi_bioskop/-/raw/develop/image/MyCinema-InvoiceTicket.png?raw=true)
+# Generate Invoice PDF with Jaspersoft
+![Invoice](https://github.com/mfyasykur/MuhammadFauzanYasykur_reservasi_bioskop/blob/main/image/MyCinema-InvoiceTicket.png?raw=true)
 
-![Invoice.PDF](https://gitlab.com/km3-bej-1/challenge/04-08/muhammadfauzanyasykur_reservasi_bioskop/-/raw/develop/generated-invoices/invoice-MYCNM-001.pdf?raw=true)
+![Invoice.PDF](https://github.com/mfyasykur/MuhammadFauzanYasykur_reservasi_bioskop/blob/main/generated-invoices/invoice-MYCNM-001.pdf?raw=true)
