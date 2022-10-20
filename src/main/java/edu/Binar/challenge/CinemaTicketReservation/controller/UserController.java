@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @RestController
 @CrossOrigin(origins = "http://mfauzan-reservasibioskop-production.up.railway.app")
-@RequestMapping("/api/mycinema-v1")
+//@RequestMapping("/api/mycinema-v1")
 public class UserController {
 
     @Autowired
@@ -30,7 +30,7 @@ public class UserController {
     @Autowired
     private ModelMapper modelMapper;
 
-    @GetMapping("/users/")
+    @GetMapping("/api/mycinema-v1/users/")
     public List<UserDto> getAllUsers() {
         return userService.getAllUsers().stream().map(user -> modelMapper.map(user, UserDto.class))
                 .collect(Collectors.toList());
@@ -41,7 +41,7 @@ public class UserController {
 //        return userRepository.findAll();
 //    }
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/api/mycinema-v1/users/{userId}")
     public ResponseEntity<UserDto> getUserById(@PathVariable(value = "userId") Long userId) throws ResourceNotFoundException {
         User user = userService.getUserById(userId);
         UserDto userResponse = UserConverter.convertEntityToDto(user);
@@ -49,7 +49,7 @@ public class UserController {
         return ResponseEntity.ok().body(userResponse);
     }
 
-    @PostMapping("/users")
+    @PostMapping("/api/mycinema-v1/users")
     public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto) {
         User userRequest = UserConverter.convertDtoToEntity(userDto);
         User user = userService.createUser(userRequest);
@@ -59,7 +59,7 @@ public class UserController {
         return new ResponseEntity<UserDto>(userResponse, HttpStatus.CREATED);
     }
 
-    @PutMapping("/users/{userId}")
+    @PutMapping("/api/mycinema-v1/users/{userId}")
     public ResponseEntity<UserDto> updateUser(@PathVariable(value = "userId") Long userId, @Valid @RequestBody UserDto userDto) throws ResourceNotFoundException {
         User userRequest = UserConverter.convertDtoToEntity(userDto);
         User user = userService.updateUser(userId, userRequest);
@@ -69,7 +69,7 @@ public class UserController {
         return ResponseEntity.ok().body(userResponse);
     }
 
-    @DeleteMapping("/users/{userId}")
+    @DeleteMapping("/api/mycinema-v1/users/{userId}")
     public ResponseEntity<String> deleteUser(@PathVariable(value = "userId") Long userId) throws ResourceNotFoundException {
         userService.deleteUser(userId);
 
