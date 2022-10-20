@@ -27,7 +27,7 @@ public class CinemaTicketReservationApplication {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/api/mycinema-v1/**").allowedOrigins("http://mfauzan-reservasibioskop-production.up.railway.app");
+				registry.addMapping("/api/mycinema-v1/users/").allowedOrigins("http://mfauzan-reservasibioskop-production.up.railway.app");
 			}
 		};
 	}
