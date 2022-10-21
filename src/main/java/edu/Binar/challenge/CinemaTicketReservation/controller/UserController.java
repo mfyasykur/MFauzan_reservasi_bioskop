@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 @RestController
-@CrossOrigin(origins = "http://mfauzan-reservasibioskop-production.up.railway.app")
+@CrossOrigin(origins = "https://mfauzan-reservasibioskop-production.up.railway.app")
 //@RequestMapping("/api/mycinema-v1")
 public class UserController {
 
