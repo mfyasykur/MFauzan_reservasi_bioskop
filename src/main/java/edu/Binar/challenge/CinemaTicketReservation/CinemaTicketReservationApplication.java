@@ -22,5 +22,4 @@ public class CinemaTicketReservationApplication {
 		return new ModelMapper();
 	}
 
-
 }

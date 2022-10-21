@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@CrossOrigin(maxAge = 3600, allowCredentials = "true")
+//@CrossOrigin(maxAge = 3600, allowCredentials = "true")
 @RestController
 @RequestMapping("/api/mycinema-v1")
 public class UserController {
@@ -35,21 +35,21 @@ public class UserController {
     @Autowired
     private ModelMapper modelMapper;
 
-    @CrossOrigin(origins = "http://mfauzan-reservasibioskop-production.up.railway.app", allowedHeaders = {"Requestor-Type", "Authorization"}, exposedHeaders = "X-Get-Header")
-    @GetMapping("/users/")
-    public ResponseEntity<List<UserDto>> getAllUsers(@RequestParam String type) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("X-Get-Header", "ExampleHeader");
-
-        List<UserDto> body = userService.getAllUsers().stream().map(user -> modelMapper.map(user, UserDto.class))
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok().headers(headers).body(body);
-    }
-//    public List<UserDto> getAllUsers() {
-//        return userService.getAllUsers().stream().map(user -> modelMapper.map(user, UserDto.class))
+//    @CrossOrigin(origins = "http://mfauzan-reservasibioskop-production.up.railway.app", allowedHeaders = {"Requestor-Type", "Authorization"}, exposedHeaders = "X-Get-Header")
+//    @GetMapping("/users/")
+//    public ResponseEntity<List<UserDto>> getAllUsers(@RequestParam String type) {
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.set("X-Get-Header", "ExampleHeader");
+//
+//        List<UserDto> body = userService.getAllUsers().stream().map(user -> modelMapper.map(user, UserDto.class))
 //                .collect(Collectors.toList());
+//
+//        return ResponseEntity.ok().headers(headers).body(body);
 //    }
+    public List<UserDto> getAllUsers() {
+        return userService.getAllUsers().stream().map(user -> modelMapper.map(user, UserDto.class))
+                .collect(Collectors.toList());
+    }
 
 //    @GetMapping("/users/")
 //    public List<User> getAllUsers() {

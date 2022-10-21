@@ -58,6 +58,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout().permitAll();
 
-        httpSecurity.cors();
+//        httpSecurity.cors();
     }
 }
