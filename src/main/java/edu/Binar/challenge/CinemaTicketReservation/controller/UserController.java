@@ -37,7 +37,7 @@ public class UserController {
 
     @CrossOrigin(origins = "http://mfauzan-reservasibioskop-production.up.railway.app", allowedHeaders = {"Requestor-Type", "Authorization"}, exposedHeaders = "X-Get-Header")
     @GetMapping("/users/")
-    public ResponseEntity<List<UserDto>> getAllUsers() {
+    public ResponseEntity<List<UserDto>> getAllUsers(@RequestParam String type) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-Get-Header", "ExampleHeader");
 
