@@ -9,6 +9,7 @@ public class CorsFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
+
     }
 
     @Override
