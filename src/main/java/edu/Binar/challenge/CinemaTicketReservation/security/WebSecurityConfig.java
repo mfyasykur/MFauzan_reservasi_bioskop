@@ -1,4 +1,4 @@
-package edu.Binar.challenge.CinemaTicketReservation.config;
+package edu.Binar.challenge.CinemaTicketReservation.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,10 +10,17 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.session.SessionManagementFilter;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Bean
+    CorsFilter corsFilter() {
+
+        return new CorsFilter();
+    }
 
     @Bean
     @Override
@@ -45,6 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
+                .addFilterBefore(corsFilter(), SessionManagementFilter.class)
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET,"/api/mycinema-v1/users/**").hasAnyRole("ADMIN", "USER")
                 .antMatchers(HttpMethod.POST, "/api/mycinema-v1/users/**").hasRole("ADMIN")

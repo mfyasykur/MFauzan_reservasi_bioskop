@@ -46,6 +46,8 @@ public class UserController {
 //
 //        return ResponseEntity.ok().headers(headers).body(body);
 //    }
+
+    @GetMapping("/users/")
     public List<UserDto> getAllUsers() {
         return userService.getAllUsers().stream().map(user -> modelMapper.map(user, UserDto.class))
                 .collect(Collectors.toList());
