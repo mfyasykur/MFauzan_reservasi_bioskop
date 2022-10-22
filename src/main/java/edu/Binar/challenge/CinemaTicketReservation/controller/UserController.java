@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @NoArgsConstructor
-//@CrossOrigin(maxAge = 3600, allowCredentials = "true")
 @RestController
 @RequestMapping("/api/mycinema-v1")
 public class UserController {
