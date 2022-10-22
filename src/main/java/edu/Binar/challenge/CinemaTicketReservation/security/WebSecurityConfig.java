@@ -1,5 +1,6 @@
 package edu.Binar.challenge.CinemaTicketReservation.security;
 
+import org.apache.catalina.filters.CorsFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -11,19 +12,16 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.time.Duration;
+import java.util.Arrays;
 import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
-//    @Bean
-//    CorsFilter corsFilter() {
-//
-//        return new CorsFilter();
-//    }
 
     @Bean
     @Override
@@ -52,19 +50,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .withUser("admin").password("admin123").roles("USER", "ADMIN");
 //    }
 
+    @Bean
+    public CorsFilter corsFilter() {
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowedOrigins(Arrays.asList("*"));
+        corsConfiguration.setAllowedMethods(Arrays.asList("*"));
+        corsConfiguration.setMaxAge(Duration.ofMinutes(10));
+        source.registerCorsConfiguration("/**", corsConfiguration);
+
+        return new CorsFilter();
+    }
+
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
 //                .addFilterBefore(corsFilter(), SessionManagementFilter.class)
-                .cors().configurationSource(request -> {
-                    var cors = new CorsConfiguration();
-                    cors.setAllowedOrigins(List.of("*"));
-                    cors.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-                    cors.setAllowedHeaders(List.of("*"));
-
-                    return cors;
-                })
-                .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET,"/api/mycinema-v1/users/**").hasAnyRole("ADMIN", "USER")
                 .antMatchers(HttpMethod.POST, "/api/mycinema-v1/users/**").hasRole("ADMIN")
@@ -77,6 +79,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().permitAll()
                 .and()
                 .logout().permitAll();
+
+        httpSecurity.cors();
 
 //        httpSecurity.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
     }
