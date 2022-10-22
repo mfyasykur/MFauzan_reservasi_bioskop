@@ -83,6 +83,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 //        httpSecurity.cors();
 
-//        httpSecurity.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
     }
 }
