@@ -58,7 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .addFilterBefore(corsFilter(), SessionManagementFilter.class)
                 .cors().configurationSource(request -> {
                     var cors = new CorsConfiguration();
-                    cors.setAllowedOrigins(List.of("http://mfauzan-reservasibioskop-production.up.railway.app", "*"));
+                    cors.setAllowedOrigins(List.of("*"));
                     cors.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                     cors.setAllowedHeaders(List.of("*"));
 
