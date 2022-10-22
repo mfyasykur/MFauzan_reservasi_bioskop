@@ -51,23 +51,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .withUser("admin").password("admin123").roles("USER", "ADMIN");
 //    }
 
-    @Bean
-    public CorsFilter corsFilter() {
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(List.of("*"));
-        corsConfiguration.setAllowedMethods(List.of("*"));
-        corsConfiguration.setMaxAge(Duration.ofMinutes(10));
-        source.registerCorsConfiguration("/**", corsConfiguration);
-
-        return new CorsFilter();
-    }
+//    @Bean
+//    public CorsFilter corsFilter() {
+//
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        CorsConfiguration corsConfiguration = new CorsConfiguration();
+//        corsConfiguration.setAllowedOrigins(List.of("*"));
+//        corsConfiguration.setAllowedMethods(List.of("*"));
+//        corsConfiguration.setMaxAge(Duration.ofMinutes(10));
+//        source.registerCorsConfiguration("/**", corsConfiguration);
+//
+//        return new CorsFilter();
+//    }
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .addFilterBefore(corsFilter(), SessionManagementFilter.class)
+//                .addFilterBefore(corsFilter(), SessionManagementFilter.class)
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET,"/api/mycinema-v1/users/**").hasAnyRole("ADMIN", "USER")
                 .antMatchers(HttpMethod.POST, "/api/mycinema-v1/users/**").hasRole("ADMIN")
@@ -77,9 +77,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and()
                 .csrf().disable()
-                .formLogin().permitAll()
-                .and()
-                .logout().permitAll();
+                .formLogin().disable()
+                .logout().disable();
 
 //        httpSecurity.cors();
 
