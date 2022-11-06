@@ -12,14 +12,14 @@ public class AppWebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry){
-        String invoicePath = uploadPath("./generated-invoices");
+        String invoicePath = uploadPath();
 
         registry.addResourceHandler("/generated-invoices/**")
                 .addResourceLocations("file:/"+invoicePath+"/");
     }
 
-    private String uploadPath(String directory){
-        Path uploadDirPath = Paths.get(directory);
+    private String uploadPath(){
+        Path uploadDirPath = Paths.get("./generated-invoices");
 
         return uploadDirPath.toFile().getAbsolutePath();
     }

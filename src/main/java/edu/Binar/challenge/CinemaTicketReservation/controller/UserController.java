@@ -4,28 +4,24 @@ import edu.Binar.challenge.CinemaTicketReservation.converter.UserConverter;
 import edu.Binar.challenge.CinemaTicketReservation.dto.UserDto;
 import edu.Binar.challenge.CinemaTicketReservation.exception.ResourceNotFoundException;
 import edu.Binar.challenge.CinemaTicketReservation.model.User;
-import edu.Binar.challenge.CinemaTicketReservation.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @AllArgsConstructor
 @NoArgsConstructor
 @RestController
 @RequestMapping("/api/mycinema-v1")
 public class UserController {
-
-    private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     private UserService userService;
@@ -33,30 +29,15 @@ public class UserController {
     @Autowired
     private ModelMapper modelMapper;
 
-//    @CrossOrigin(origins = "http://mfauzan-reservasibioskop-production.up.railway.app", allowedHeaders = {"Requestor-Type", "Authorization"}, exposedHeaders = "X-Get-Header")
-//    @GetMapping("/users/")
-//    public ResponseEntity<List<UserDto>> getAllUsers(@RequestParam String type) {
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.set("X-Get-Header", "ExampleHeader");
-//
-//        List<UserDto> body = userService.getAllUsers().stream().map(user -> modelMapper.map(user, UserDto.class))
-//                .collect(Collectors.toList());
-//
-//        return ResponseEntity.ok().headers(headers).body(body);
-//    }
-
     @GetMapping("/users/")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<UserDto> getAllUsers() {
         return userService.getAllUsers().stream().map(user -> modelMapper.map(user, UserDto.class))
-                .collect(Collectors.toList());
+                .toList();
     }
 
-//    @GetMapping("/users/")
-//    public List<User> getAllUsers() {
-//        return userRepository.findAll();
-//    }
-
     @GetMapping("/users/{userId}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<UserDto> getUserById(@PathVariable(value = "userId") Long userId) throws ResourceNotFoundException {
         User user = userService.getUserById(userId);
         UserDto userResponse = UserConverter.convertEntityToDto(user);
@@ -65,16 +46,18 @@ public class UserController {
     }
 
     @PostMapping("/users")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto) {
         User userRequest = UserConverter.convertDtoToEntity(userDto);
         User user = userService.createUser(userRequest);
 
         UserDto userResponse = UserConverter.convertEntityToDto(user);
 
-        return new ResponseEntity<UserDto>(userResponse, HttpStatus.CREATED);
+        return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
     }
 
     @PutMapping("/users/{userId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserDto> updateUser(@PathVariable(value = "userId") Long userId, @Valid @RequestBody UserDto userDto) throws ResourceNotFoundException {
         User userRequest = UserConverter.convertDtoToEntity(userDto);
         User user = userService.updateUser(userId, userRequest);
@@ -85,6 +68,7 @@ public class UserController {
     }
 
     @DeleteMapping("/users/{userId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deleteUser(@PathVariable(value = "userId") Long userId) throws ResourceNotFoundException {
         userService.deleteUser(userId);
 

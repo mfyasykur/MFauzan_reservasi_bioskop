@@ -32,15 +32,15 @@ public class Booking {
     }
 
     @Enumerated
-    @Column(name = "status", nullable = false)
+    @Column(name = "status")
     private bookingStatus status;
 
     @ManyToOne
-    @JoinColumn(name = "userId", nullable = false)
+    @JoinColumn(name = "userId")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "showId", nullable = false)
+    @JoinColumn(name = "showId")
     private Show show;
 
     @Override
