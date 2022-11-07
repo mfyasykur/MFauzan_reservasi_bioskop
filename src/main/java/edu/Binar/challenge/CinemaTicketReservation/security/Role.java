@@ -12,7 +12,8 @@ import javax.persistence.*;
 public class Role {
 
     public enum ERole {
-        ROLE_USER, ROLE_ADMIN
+        ROLE_USER,
+        ROLE_ADMIN
     }
 
     @Id

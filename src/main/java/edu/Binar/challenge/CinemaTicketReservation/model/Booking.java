@@ -26,14 +26,14 @@ public class Booking {
     @Column(name = "timeStamp", nullable = false)
     private LocalDateTime timeStamp;
 
-    public enum bookingStatus {
-        success,
-        canceled
+    public enum BookingStatus {
+        SUCCESS,
+        CANCELED
     }
 
     @Enumerated
     @Column(name = "status")
-    private bookingStatus status;
+    private BookingStatus status;
 
     @ManyToOne
     @JoinColumn(name = "userId")

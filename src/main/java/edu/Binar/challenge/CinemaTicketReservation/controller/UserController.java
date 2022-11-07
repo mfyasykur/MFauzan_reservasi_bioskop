@@ -4,6 +4,7 @@ import edu.Binar.challenge.CinemaTicketReservation.converter.UserConverter;
 import edu.Binar.challenge.CinemaTicketReservation.dto.UserDto;
 import edu.Binar.challenge.CinemaTicketReservation.exception.ResourceNotFoundException;
 import edu.Binar.challenge.CinemaTicketReservation.model.User;
+import edu.Binar.challenge.CinemaTicketReservation.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;

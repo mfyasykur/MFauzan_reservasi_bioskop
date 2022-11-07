@@ -1,6 +1,7 @@
 package edu.Binar.challenge.CinemaTicketReservation.security;
 
 import edu.Binar.challenge.CinemaTicketReservation.service.UserDetailsServiceImpl;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,7 @@ import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.Arrays;
 
+@Setter
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -76,15 +78,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated();
 
         httpSecurity.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-//                .httpBasic()
-//                .and()
-//                .authorizeRequests()
-//                .antMatchers(HttpMethod.GET,"/api/mycinema-v1/users/**").hasRole("USER")
-//                .antMatchers(HttpMethod.POST, "/api/mycinema-v1/users/**").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.PUT, "/api/mycinema-v1/users/**").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.DELETE, "/api/mycinema-v1/users/**").hasRole("ADMIN")
-//                .and()
-//                .csrf().disable()
-//                .formLogin().disable();
     }
 }

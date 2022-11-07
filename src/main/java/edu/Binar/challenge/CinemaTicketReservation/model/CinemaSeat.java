@@ -23,8 +23,8 @@ public class CinemaSeat {
     private int seatNumber;
 
     public enum seatType {
-        regular,
-        sweetBox
+        REGULAR,
+        SWEET_BOX
     }
 
     @Enumerated

@@ -4,8 +4,11 @@ import edu.Binar.challenge.CinemaTicketReservation.dto.UserDto;
 import edu.Binar.challenge.CinemaTicketReservation.model.User;
 import org.modelmapper.ModelMapper;
 
-
 public class UserConverter {
+
+    private UserConverter() {
+        throw new IllegalStateException();
+    }
 
     private static final ModelMapper modelMapper = new ModelMapper();
 

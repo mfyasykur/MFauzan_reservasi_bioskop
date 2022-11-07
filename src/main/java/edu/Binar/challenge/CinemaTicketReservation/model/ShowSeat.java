@@ -16,8 +16,8 @@ public class ShowSeat {
     private long showSeatId;
 
     public enum showSeatStatus {
-        available,
-        sold
+        AVAILABLE,
+        SOLD
     }
 
     @Enumerated

@@ -36,7 +36,7 @@ public class InvoiceController {
 
         InvoiceDto invoiceResponse = InvoiceConverter.convertEntityToDto(invoice);
 
-        return new ResponseEntity<InvoiceDto>(invoiceResponse, HttpStatus.CREATED);
+        return new ResponseEntity<>(invoiceResponse, HttpStatus.CREATED);
     }
 
     @GetMapping

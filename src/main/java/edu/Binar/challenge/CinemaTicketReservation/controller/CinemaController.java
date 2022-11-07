@@ -3,6 +3,7 @@ package edu.Binar.challenge.CinemaTicketReservation.controller;
 import edu.Binar.challenge.CinemaTicketReservation.exception.ResourceNotFoundException;
 import edu.Binar.challenge.CinemaTicketReservation.model.Cinema;
 import edu.Binar.challenge.CinemaTicketReservation.repository.CinemaRepository;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Setter
 @RestController
 @RequestMapping("/api/mycinema-v1")
 public class CinemaController {
@@ -24,11 +26,13 @@ public class CinemaController {
         return cinemaRepository.findAll();
     }
 
+    public static final String MESSAGE = "Cinema not found for this id :: ";
+
     @GetMapping("/cinemas/{cinemaId}")
     public ResponseEntity<Cinema> getCinemaById(@PathVariable(value = "cinemaId") Long cinemaId)
             throws ResourceNotFoundException {
         Cinema cinema = cinemaRepository.findById(cinemaId)
-                .orElseThrow(() -> new ResourceNotFoundException("Cinema not found for this id :: " + cinemaId));
+                .orElseThrow(() -> new ResourceNotFoundException(MESSAGE + cinemaId));
 
         return ResponseEntity.ok().body(cinema);
     }
@@ -42,7 +46,7 @@ public class CinemaController {
     public ResponseEntity<Cinema> updateCinema(@PathVariable(value = "cinemaId") Long cinemaId, @Valid @RequestBody Cinema cinemaDetails)
             throws ResourceNotFoundException {
         Cinema cinema = cinemaRepository.findById(cinemaId)
-                .orElseThrow(() -> new ResourceNotFoundException("Cinema not found for this id :: " + cinemaId));
+                .orElseThrow(() -> new ResourceNotFoundException(MESSAGE + cinemaId));
 
         cinema.setName(cinemaDetails.getName());
         cinema.setTotalCinemaHalls(cinemaDetails.getTotalCinemaHalls());
@@ -56,7 +60,7 @@ public class CinemaController {
     public Map<String, Boolean> deleteCinema(@PathVariable(value = "cinemaId") Long cinemaId)
             throws ResourceNotFoundException {
         Cinema cinema = cinemaRepository.findById(cinemaId)
-                .orElseThrow(() -> new ResourceNotFoundException("Cinema not found for this id :: " + cinemaId));
+                .orElseThrow(() -> new ResourceNotFoundException(MESSAGE + cinemaId));
 
         cinemaRepository.delete(cinema);
         Map<String, Boolean> response = new HashMap<>();

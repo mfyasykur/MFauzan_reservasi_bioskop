@@ -3,6 +3,7 @@ package edu.Binar.challenge.CinemaTicketReservation.controller;
 import edu.Binar.challenge.CinemaTicketReservation.exception.ResourceNotFoundException;
 import edu.Binar.challenge.CinemaTicketReservation.model.ShowSeat;
 import edu.Binar.challenge.CinemaTicketReservation.repository.ShowSeatRepository;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Setter
 @RestController
 @RequestMapping("/api/mycinema-v1")
 public class ShowSeatController {
@@ -24,11 +26,13 @@ public class ShowSeatController {
         return showSeatRepository.findAll();
     }
 
+    public static final String MESSAGE = "ShowSeat not found for this id :: ";
+
     @GetMapping("/showSeats/{showSeatId}")
     public ResponseEntity<ShowSeat> getShowSeatById(@PathVariable(value = "showSeatId") Long showSeatId)
             throws ResourceNotFoundException {
         ShowSeat showSeat = showSeatRepository.findById(showSeatId)
-                .orElseThrow(() -> new ResourceNotFoundException("ShowSeat not found for this id :: " + showSeatId));
+                .orElseThrow(() -> new ResourceNotFoundException(MESSAGE + showSeatId));
 
         return ResponseEntity.ok().body(showSeat);
     }
@@ -42,7 +46,7 @@ public class ShowSeatController {
     public ResponseEntity<ShowSeat> updateShowSeat(@PathVariable(value = "showSeatId") Long showSeatId, @Valid @RequestBody ShowSeat showSeatDetails)
             throws ResourceNotFoundException {
         ShowSeat showSeat = showSeatRepository.findById(showSeatId)
-                .orElseThrow(() -> new ResourceNotFoundException("ShowSeat not found for this id :: " + showSeatId));
+                .orElseThrow(() -> new ResourceNotFoundException(MESSAGE + showSeatId));
 
         showSeat.setStatus(showSeatDetails.getStatus());
         showSeat.setPrice(showSeatDetails.getPrice());
@@ -58,7 +62,7 @@ public class ShowSeatController {
     public Map<String, Boolean> deleteShowSeat(@PathVariable(value = "showSeatId") Long showSeatId)
             throws ResourceNotFoundException {
         ShowSeat showSeat = showSeatRepository.findById(showSeatId)
-                .orElseThrow(() -> new ResourceNotFoundException("ShowSeat not found for this id :: " + showSeatId));
+                .orElseThrow(() -> new ResourceNotFoundException(MESSAGE + showSeatId));
 
         showSeatRepository.delete(showSeat);
         Map<String, Boolean> response = new HashMap<>();

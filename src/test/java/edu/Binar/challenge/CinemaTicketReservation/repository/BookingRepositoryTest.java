@@ -57,7 +57,7 @@ public class BookingRepositoryTest {
         CinemaHall cinemaHall = new CinemaHall(1, "A", 40, cinema);
         cinemaHallRepository.save(cinemaHall);
 
-        Movie movie = new Movie(1, "Kancil dan Buaya", "Dewasa", 120, "Java", new Date(), "Indonesia", "Thriller", Movie.showingStatus.onShow);
+        Movie movie = new Movie(1, "Kancil dan Buaya", "Dewasa", 120, "Java", new Date(), "Indonesia", "Thriller", Movie.showingStatus.ON_SHOW);
         movieRepository.save(movie);
 
         Show show = new Show(1, LocalDate.now(), LocalDateTime.now(), LocalDateTime.now(), cinemaHall, movie);
@@ -65,7 +65,7 @@ public class BookingRepositoryTest {
 
         LocalDateTime timeStamp = LocalDateTime.now();
 
-        Booking booking = new Booking(1, 1, timeStamp, Booking.bookingStatus.success, user, show);
+        Booking booking = new Booking(1, 1, timeStamp, Booking.BookingStatus.SUCCESS, user, show);
         bookingRepository.save(booking);
         Boolean actual = bookingRepository.existsById(1L);
         assertThat(actual).isTrue();

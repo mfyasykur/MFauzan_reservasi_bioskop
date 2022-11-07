@@ -2,6 +2,7 @@ package edu.Binar.challenge.CinemaTicketReservation.service;
 
 import edu.Binar.challenge.CinemaTicketReservation.model.User;
 import edu.Binar.challenge.CinemaTicketReservation.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,11 +11,12 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
+@RequiredArgsConstructor
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     @Transactional

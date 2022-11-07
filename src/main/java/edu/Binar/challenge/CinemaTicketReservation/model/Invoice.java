@@ -49,8 +49,4 @@ public class Invoice extends Audit {
     @Column(name = "price", nullable = false)
     public BigDecimal price;
 
-    @Override
-    public String toString(){
-        return String.format("Invoice [invoiceId=" + invoiceId + ", invoiceNumber=" + invoiceNumber + ", title=" + title + ", date=" + date + ", time=" + time + ", row=" + row + ", seatNumber=" + seatNumber + ", hall=" + hall + ", price=" + price + "]");
-    }
 }

@@ -1,15 +1,22 @@
 package edu.Binar.challenge.CinemaTicketReservation.controller;
 
+import edu.Binar.challenge.CinemaTicketReservation.dto.LoginRequest;
+import edu.Binar.challenge.CinemaTicketReservation.dto.MessageResponse;
+import edu.Binar.challenge.CinemaTicketReservation.dto.SignupRequest;
 import edu.Binar.challenge.CinemaTicketReservation.model.User;
 import edu.Binar.challenge.CinemaTicketReservation.repository.UserRepository;
+import edu.Binar.challenge.CinemaTicketReservation.security.JwtResponse;
+import edu.Binar.challenge.CinemaTicketReservation.security.JwtUtils;
+import edu.Binar.challenge.CinemaTicketReservation.security.Role;
+import edu.Binar.challenge.CinemaTicketReservation.security.RoleRepository;
+import edu.Binar.challenge.CinemaTicketReservation.service.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -53,7 +60,7 @@ public class AuthController {
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         List<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
+                .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(new JwtResponse(

@@ -21,10 +21,14 @@ public class BookingServiceImpl implements BookingService {
         return bookingRepository.findAll();
     }
 
+    public String message() {
+        return "Booking not found for this id :: ";
+    }
+
     @Override
     public Booking getBookingById(Long bookingId) throws ResourceNotFoundException {
         Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new ResourceNotFoundException("Booking not found for this id :: " + bookingId));
+                .orElseThrow(() -> new ResourceNotFoundException(message() + bookingId));
 
         return bookingRepository.save(booking);
     }
@@ -37,7 +41,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public Booking updateBooking(Long bookingId, Booking bookingDetails) throws ResourceNotFoundException {
         Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new ResourceNotFoundException("Booking not found for this id :: " + bookingId));
+                .orElseThrow(() -> new ResourceNotFoundException(message() + bookingId));
 
         booking.setNumberOfSeats(bookingDetails.getNumberOfSeats());
         booking.setTimeStamp(bookingDetails.getTimeStamp());
@@ -51,7 +55,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public void deleteBooking(Long bookingId) throws ResourceNotFoundException {
         Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new ResourceNotFoundException("Booking not found for this id :: " + bookingId));
+                .orElseThrow(() -> new ResourceNotFoundException(message() + bookingId));
 
         bookingRepository.delete(booking);
     }

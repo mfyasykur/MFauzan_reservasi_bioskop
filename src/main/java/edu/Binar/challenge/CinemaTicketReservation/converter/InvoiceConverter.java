@@ -6,6 +6,10 @@ import org.modelmapper.ModelMapper;
 
 public class InvoiceConverter {
 
+    private InvoiceConverter() {
+        throw new IllegalStateException();
+    }
+
     private static final ModelMapper modelMapper = new ModelMapper();
 
     public static Invoice convertDtoToEntity(InvoiceDto invoiceDto){

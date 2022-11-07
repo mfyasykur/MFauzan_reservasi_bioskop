@@ -3,6 +3,7 @@ package edu.Binar.challenge.CinemaTicketReservation.controller;
 import edu.Binar.challenge.CinemaTicketReservation.exception.ResourceNotFoundException;
 import edu.Binar.challenge.CinemaTicketReservation.model.City;
 import edu.Binar.challenge.CinemaTicketReservation.repository.CityRepository;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Setter
 @RestController
 @RequestMapping("/api/mycinema-v1")
 public class CityController {
@@ -24,11 +26,13 @@ public class CityController {
         return cityRepository.findAll();
     }
 
+    public static final String MESSAGE = "City not found for this id :: ";
+
     @GetMapping("/cities/{cityId}")
     public ResponseEntity<City> getCityById(@PathVariable(value = "cityId") Long cityId)
             throws ResourceNotFoundException {
         City city = cityRepository.findById(cityId)
-                .orElseThrow(() -> new ResourceNotFoundException("City not found for this id :: " + cityId));
+                .orElseThrow(() -> new ResourceNotFoundException(MESSAGE + cityId));
 
         return ResponseEntity.ok().body(city);
     }
@@ -42,7 +46,7 @@ public class CityController {
     public ResponseEntity<City> updateCity(@PathVariable(value = "cityId") Long cityId, @Valid @RequestBody City cityDetails)
             throws ResourceNotFoundException {
         City city = cityRepository.findById(cityId)
-                .orElseThrow(() -> new ResourceNotFoundException("City not found for this id :: " + cityId));
+                .orElseThrow(() -> new ResourceNotFoundException(MESSAGE + cityId));
 
         city.setName(cityDetails.getName());
         city.setState(cityDetails.getState());
@@ -56,7 +60,7 @@ public class CityController {
     public Map<String, Boolean> deleteCity(@PathVariable(value = "cityId") Long cityId)
             throws ResourceNotFoundException {
         City city = cityRepository.findById(cityId)
-                .orElseThrow(() -> new ResourceNotFoundException("City not found for this id :: " + cityId));
+                .orElseThrow(() -> new ResourceNotFoundException(MESSAGE + cityId));
 
         cityRepository.delete(city);
         Map<String, Boolean> response = new HashMap<>();

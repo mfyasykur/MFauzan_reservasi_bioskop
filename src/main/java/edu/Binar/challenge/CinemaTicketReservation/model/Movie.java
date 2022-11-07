@@ -42,8 +42,8 @@ public class Movie {
     private String genre;
 
     public enum showingStatus {
-        onShow,
-        comingSoon
+        ON_SHOW,
+        COMING_SOON
     }
 
     @Enumerated

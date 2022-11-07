@@ -3,6 +3,7 @@ package edu.Binar.challenge.CinemaTicketReservation.controller;
 import edu.Binar.challenge.CinemaTicketReservation.exception.ResourceNotFoundException;
 import edu.Binar.challenge.CinemaTicketReservation.model.Show;
 import edu.Binar.challenge.CinemaTicketReservation.repository.ShowRepository;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Setter
 @RestController
 @RequestMapping("/api/mycinema-v1")
 public class ShowController {
@@ -24,11 +26,13 @@ public class ShowController {
         return showRepository.findAll();
     }
 
+    public static final String MESSAGE = "Show not found for this id :: ";
+
     @GetMapping("/shows/{showId}")
     public ResponseEntity<Show> getShowById(@PathVariable(value = "showId") Long showId)
             throws ResourceNotFoundException {
         Show show = showRepository.findById(showId)
-                .orElseThrow(() -> new ResourceNotFoundException("Show not found for this id :: " + showId));
+                .orElseThrow(() -> new ResourceNotFoundException(MESSAGE + showId));
 
         return ResponseEntity.ok().body(show);
     }
@@ -42,7 +46,7 @@ public class ShowController {
     public ResponseEntity<Show> updateShow(@PathVariable(value = "showId") Long showId, @Valid @RequestBody Show showDetails)
             throws ResourceNotFoundException {
         Show show = showRepository.findById(showId)
-                .orElseThrow(() -> new ResourceNotFoundException("Show not found for this id :: " + showId));
+                .orElseThrow(() -> new ResourceNotFoundException(MESSAGE + showId));
 
         show.setDate(showDetails.getDate());
         show.setStartTime(showDetails.getStartTime());
@@ -58,7 +62,7 @@ public class ShowController {
     public Map<String, Boolean> deleteShow(@PathVariable(value = "showId") Long showId)
             throws ResourceNotFoundException {
         Show show = showRepository.findById(showId)
-                .orElseThrow(() -> new ResourceNotFoundException("Show not found for this id :: " + showId));
+                .orElseThrow(() -> new ResourceNotFoundException(MESSAGE + showId));
 
         showRepository.delete(show);
         Map<String, Boolean> response = new HashMap<>();

@@ -23,9 +23,9 @@ public class Payment {
     private ZonedDateTime timeStamp;
 
     public enum paymentMethod {
-        cash,
-        bank,
-        eWallet
+        CASH,
+        BANK,
+        E_WALLET
     }
 
     @Enumerated
