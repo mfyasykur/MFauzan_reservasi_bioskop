@@ -1,17 +1,19 @@
 package edu.Binar.challenge.CinemaTicketReservation.controller;
 
+import edu.Binar.challenge.CinemaTicketReservation.converter.CityConverter;
+import edu.Binar.challenge.CinemaTicketReservation.dto.CityDto;
 import edu.Binar.challenge.CinemaTicketReservation.exception.ResourceNotFoundException;
 import edu.Binar.challenge.CinemaTicketReservation.model.City;
-import edu.Binar.challenge.CinemaTicketReservation.repository.CityRepository;
+import edu.Binar.challenge.CinemaTicketReservation.service.CityService;
 import lombok.Setter;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Setter
 @RestController
@@ -19,53 +21,48 @@ import java.util.Map;
 public class CityController {
 
     @Autowired
-    private CityRepository cityRepository;
+    private CityService cityService;
 
     @GetMapping("/cities/")
-    public List<City> getAllCities() {
-        return cityRepository.findAll();
+    public List<CityDto> getAllCities() {
+        return cityService.getAllCities().stream().map(city -> new ModelMapper().map(city, CityDto.class))
+                .toList();
     }
 
-    public static final String MESSAGE = "City not found for this id :: ";
-
-    @GetMapping("/cities/{cityId}")
-    public ResponseEntity<City> getCityById(@PathVariable(value = "cityId") Long cityId)
+    @GetMapping("/city/{cityId}")
+    public ResponseEntity<CityDto> getCityById(@PathVariable(value = "cityId") Long cityId)
             throws ResourceNotFoundException {
-        City city = cityRepository.findById(cityId)
-                .orElseThrow(() -> new ResourceNotFoundException(MESSAGE + cityId));
 
-        return ResponseEntity.ok().body(city);
+        City city = cityService.getCityById(cityId);
+        CityDto cityResponse = CityConverter.convertEntityToDto(city);
+
+        return ResponseEntity.ok().body(cityResponse);
     }
 
-    @PostMapping("/cities")
-    public City createCity(@Valid @RequestBody City city){
-        return cityRepository.save(city);
+    @PostMapping("/city")
+    public ResponseEntity<CityDto> createCity(@Valid @RequestBody CityDto cityDto){
+
+        City cityRequest = CityConverter.convertDtoToEntity(cityDto);
+        City city = cityService.createCity(cityRequest);
+        CityDto cityResponse = CityConverter.convertEntityToDto(city);
+
+        return new ResponseEntity<>(cityResponse, HttpStatus.CREATED);
     }
 
-    @PutMapping("/cities/{cityId}")
-    public ResponseEntity<City> updateCity(@PathVariable(value = "cityId") Long cityId, @Valid @RequestBody City cityDetails)
-            throws ResourceNotFoundException {
-        City city = cityRepository.findById(cityId)
-                .orElseThrow(() -> new ResourceNotFoundException(MESSAGE + cityId));
+    @PutMapping("/city/{cityId}")
+    public ResponseEntity<CityDto> updateCity(@PathVariable(value = "cityId") Long cityId, @Valid @RequestBody CityDto cityDto) throws ResourceNotFoundException {
 
-        city.setName(cityDetails.getName());
-        city.setState(cityDetails.getState());
-        city.setZipCode(cityDetails.getZipCode());
-        final City updatedCity = cityRepository.save(city);
+        City cityRequest = CityConverter.convertDtoToEntity(cityDto);
+        City city = cityService.updateCity(cityId, cityRequest);
+        CityDto cityResponse = CityConverter.convertEntityToDto(city);
 
-        return ResponseEntity.ok(updatedCity);
+        return new ResponseEntity<>(cityResponse, HttpStatus.OK);
     }
 
-    @DeleteMapping("/cities/{cityId}")
-    public Map<String, Boolean> deleteCity(@PathVariable(value = "cityId") Long cityId)
-            throws ResourceNotFoundException {
-        City city = cityRepository.findById(cityId)
-                .orElseThrow(() -> new ResourceNotFoundException(MESSAGE + cityId));
+    @DeleteMapping("/city/{cityId}")
+    public ResponseEntity<String> deleteCity(@PathVariable(value = "cityId") Long cityId) throws ResourceNotFoundException {
+        cityService.deleteCity(cityId);
 
-        cityRepository.delete(city);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-
-        return response;
+        return ResponseEntity.ok().body("City with ID(" + cityId + ") deleted successfully");
     }
 }

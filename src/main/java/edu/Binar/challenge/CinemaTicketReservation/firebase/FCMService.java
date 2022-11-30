@@ -19,21 +19,21 @@ public class FCMService {
 
         Message message = getPreconfiguredMessageWithData(data, request);
         String response = sendAndGetResponse(message);
-        logger.info("Sent message with data. Topic: " + request.getTopic() + ", " + response);
+        logger.info("Sent message with data. Topic: {}, {}", request.getTopic() , response);
     }
 
     public void sendMessageWithoutData(PushNotificationRequest request) throws InterruptedException, ExecutionException {
 
         Message message = getPreconfiguredMessageWithoutData(request);
         String response = sendAndGetResponse(message);
-        logger.info("Sent message without data. Topic: " + request.getTopic() + ", " + response);
+        logger.info("Sent message without data. Topic: {}, {}", request.getTopic() , response);
     }
 
     public void sendMessageToToken(PushNotificationRequest request) throws InterruptedException, ExecutionException {
 
         Message message = getPreconfiguredMessageToToken(request);
         String response = sendAndGetResponse(message);
-        logger.info("Sent message to token. Device token: " + request.getToken() + ", " + response);
+        logger.info("Sent message to token. Device token: {}, {}", request.getToken() , response);
     }
 
     private String sendAndGetResponse(Message message) throws InterruptedException, ExecutionException {

@@ -1,17 +1,19 @@
 package edu.Binar.challenge.CinemaTicketReservation.controller;
 
+import edu.Binar.challenge.CinemaTicketReservation.converter.MovieConverter;
+import edu.Binar.challenge.CinemaTicketReservation.dto.MovieDto;
 import edu.Binar.challenge.CinemaTicketReservation.exception.ResourceNotFoundException;
 import edu.Binar.challenge.CinemaTicketReservation.model.Movie;
-import edu.Binar.challenge.CinemaTicketReservation.repository.MovieRepository;
+import edu.Binar.challenge.CinemaTicketReservation.service.MovieService;
 import lombok.Setter;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Setter
 @RestController
@@ -19,58 +21,48 @@ import java.util.Map;
 public class MovieController {
 
     @Autowired
-    private MovieRepository movieRepository;
+    private MovieService movieService;
 
     @GetMapping("/movies/")
-    public List<Movie> getAllMovies() {
-        return movieRepository.findAll();
+    public List<MovieDto> getAllMovies() {
+        return movieService.getAllMovies().stream().map(movie -> new ModelMapper().map(movie, MovieDto.class))
+                .toList();
     }
 
-    public static final String MESSAGE = "Movie not found for this id :: ";
+    @GetMapping("/movie/{movieId}")
+    public ResponseEntity<MovieDto> getMovieById(@PathVariable(value = "movieId") Long movieId)
+            throws ResourceNotFoundException {
 
-    @GetMapping("/movies/{movieId}")
-    public ResponseEntity<Movie> getMovieById(@PathVariable(value = "movieId") Long movieId)
-        throws ResourceNotFoundException {
-        Movie movie = movieRepository.findById(movieId)
-                .orElseThrow(() -> new ResourceNotFoundException(MESSAGE + movieId));
+        Movie movie = movieService.getMovieById(movieId);
+        MovieDto movieResponse = MovieConverter.convertEntityToDto(movie);
 
-        return ResponseEntity.ok().body(movie);
+        return ResponseEntity.ok().body(movieResponse);
     }
 
-    @PostMapping("/movies")
-    public Movie createMovie(@Valid @RequestBody Movie movie){
-        return movieRepository.save(movie);
+    @PostMapping("/movie")
+    public ResponseEntity<MovieDto> createMovie(@Valid @RequestBody MovieDto movieDto){
+
+        Movie movieRequest = MovieConverter.convertDtoToEntity(movieDto);
+        Movie movie = movieService.createMovie(movieRequest);
+        MovieDto movieResponse = MovieConverter.convertEntityToDto(movie);
+
+        return new ResponseEntity<>(movieResponse, HttpStatus.CREATED);
     }
 
-    @PutMapping("/movies/{movieId}")
-    public ResponseEntity<Movie> updateMovie(@PathVariable(value = "movieId") Long movieId, @Valid @RequestBody Movie movieDetails)
-        throws ResourceNotFoundException {
-        Movie movie = movieRepository.findById(movieId)
-                .orElseThrow(() -> new ResourceNotFoundException(MESSAGE + movieId));
+    @PutMapping("/movie/{movieId}")
+    public ResponseEntity<MovieDto> updateMovie(@PathVariable(value = "movieId") Long movieId, @Valid @RequestBody MovieDto movieDto) throws ResourceNotFoundException {
 
-        movie.setTitle(movieDetails.getTitle());
-        movie.setDescription(movieDetails.getDescription());
-        movie.setDuration(movieDetails.getDuration());
-        movie.setLanguage(movieDetails.getLanguage());
-        movie.setReleaseDate(movieDetails.getReleaseDate());
-        movie.setCountry(movieDetails.getCountry());
-        movie.setGenre(movieDetails.getGenre());
-        movie.setStatus(movieDetails.getStatus());
-        final Movie updatedMovie = movieRepository.save(movie);
+        Movie movieRequest = MovieConverter.convertDtoToEntity(movieDto);
+        Movie movie = movieService.updateMovie(movieId, movieRequest);
+        MovieDto movieResponse = MovieConverter.convertEntityToDto(movie);
 
-        return ResponseEntity.ok(updatedMovie);
+        return new ResponseEntity<>(movieResponse, HttpStatus.OK);
     }
 
-    @DeleteMapping("/movies/{movieId}")
-    public Map<String, Boolean> deleteMovie(@PathVariable(value = "movieId") Long movieId)
-        throws ResourceNotFoundException {
-        Movie movie = movieRepository.findById(movieId)
-                .orElseThrow(() -> new ResourceNotFoundException(MESSAGE + movieId));
+    @DeleteMapping("/movie/{movieId}")
+    public ResponseEntity<String> deleteMovie(@PathVariable(value = "movieId") Long movieId) throws ResourceNotFoundException {
+        movieService.deleteMovie(movieId);
 
-        movieRepository.delete(movie);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-
-        return response;
+        return ResponseEntity.ok().body("Movie with ID(" + movieId + ") deleted successfully");
     }
 }
