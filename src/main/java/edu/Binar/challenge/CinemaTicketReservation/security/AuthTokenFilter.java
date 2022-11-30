@@ -1,6 +1,6 @@
 package edu.Binar.challenge.CinemaTicketReservation.security;
 
-import edu.Binar.challenge.CinemaTicketReservation.service.UserDetailsServiceImpl;
+import edu.Binar.challenge.CinemaTicketReservation.service.impl.UserDetailsServiceImpl;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;

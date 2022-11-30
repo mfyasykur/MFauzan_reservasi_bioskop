@@ -1,8 +1,9 @@
-package edu.Binar.challenge.CinemaTicketReservation.service;
+package edu.Binar.challenge.CinemaTicketReservation.service.impl;
 
 import edu.Binar.challenge.CinemaTicketReservation.exception.ResourceNotFoundException;
 import edu.Binar.challenge.CinemaTicketReservation.model.Booking;
 import edu.Binar.challenge.CinemaTicketReservation.repository.BookingRepository;
+import edu.Binar.challenge.CinemaTicketReservation.service.BookingService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

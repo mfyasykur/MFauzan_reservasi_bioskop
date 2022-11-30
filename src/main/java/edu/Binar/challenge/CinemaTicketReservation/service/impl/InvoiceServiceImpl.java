@@ -1,7 +1,8 @@
-package edu.Binar.challenge.CinemaTicketReservation.service;
+package edu.Binar.challenge.CinemaTicketReservation.service.impl;
 
 import edu.Binar.challenge.CinemaTicketReservation.model.Invoice;
 import edu.Binar.challenge.CinemaTicketReservation.repository.InvoiceRepository;
+import edu.Binar.challenge.CinemaTicketReservation.service.InvoiceService;
 import lombok.AllArgsConstructor;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
