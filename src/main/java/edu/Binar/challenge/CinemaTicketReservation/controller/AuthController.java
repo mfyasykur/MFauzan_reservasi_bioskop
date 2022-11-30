@@ -9,7 +9,7 @@ import edu.Binar.challenge.CinemaTicketReservation.security.JwtResponse;
 import edu.Binar.challenge.CinemaTicketReservation.security.JwtUtils;
 import edu.Binar.challenge.CinemaTicketReservation.security.Role;
 import edu.Binar.challenge.CinemaTicketReservation.security.RoleRepository;
-import edu.Binar.challenge.CinemaTicketReservation.service.UserDetailsImpl;
+import edu.Binar.challenge.CinemaTicketReservation.service.impl.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

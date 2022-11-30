@@ -1,6 +1,6 @@
 package edu.Binar.challenge.CinemaTicketReservation.security;
 
-import edu.Binar.challenge.CinemaTicketReservation.service.UserDetailsImpl;
+import edu.Binar.challenge.CinemaTicketReservation.service.impl.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package edu.Binar.challenge.CinemaTicketReservation.service;
+package edu.Binar.challenge.CinemaTicketReservation.service.impl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.Binar.challenge.CinemaTicketReservation.model.User;

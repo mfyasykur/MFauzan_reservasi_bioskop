@@ -1,6 +1,6 @@
 package edu.Binar.challenge.CinemaTicketReservation.security;
 
-import edu.Binar.challenge.CinemaTicketReservation.service.UserDetailsServiceImpl;
+import edu.Binar.challenge.CinemaTicketReservation.service.impl.UserDetailsServiceImpl;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

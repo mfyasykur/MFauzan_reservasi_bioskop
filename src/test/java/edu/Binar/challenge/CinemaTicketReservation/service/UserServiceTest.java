@@ -3,6 +3,7 @@ package edu.Binar.challenge.CinemaTicketReservation.service;
 import edu.Binar.challenge.CinemaTicketReservation.exception.ResourceNotFoundException;
 import edu.Binar.challenge.CinemaTicketReservation.model.User;
 import edu.Binar.challenge.CinemaTicketReservation.repository.UserRepository;
+import edu.Binar.challenge.CinemaTicketReservation.service.impl.UserServiceImpl;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
@@ -11,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.transaction.Transactional;
 import java.util.*;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -18,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
+@Transactional
 @RunWith(SpringRunner.class)
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
