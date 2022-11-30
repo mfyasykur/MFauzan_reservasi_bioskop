@@ -1,17 +1,19 @@
 package edu.Binar.challenge.CinemaTicketReservation.controller;
 
+import edu.Binar.challenge.CinemaTicketReservation.converter.ShowConverter;
+import edu.Binar.challenge.CinemaTicketReservation.dto.ShowDto;
 import edu.Binar.challenge.CinemaTicketReservation.exception.ResourceNotFoundException;
 import edu.Binar.challenge.CinemaTicketReservation.model.Show;
-import edu.Binar.challenge.CinemaTicketReservation.repository.ShowRepository;
+import edu.Binar.challenge.CinemaTicketReservation.service.ShowService;
 import lombok.Setter;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Setter
 @RestController
@@ -19,55 +21,48 @@ import java.util.Map;
 public class ShowController {
 
     @Autowired
-    private ShowRepository showRepository;
+    private ShowService showService;
 
     @GetMapping("/shows/")
-    public List<Show> getAllShows() {
-        return showRepository.findAll();
+    public List<ShowDto> getAllShows() {
+        return showService.getAllShows().stream().map(show -> new ModelMapper().map(show, ShowDto.class))
+                .toList();
     }
 
-    public static final String MESSAGE = "Show not found for this id :: ";
-
-    @GetMapping("/shows/{showId}")
-    public ResponseEntity<Show> getShowById(@PathVariable(value = "showId") Long showId)
+    @GetMapping("/show/{showId}")
+    public ResponseEntity<ShowDto> getShowById(@PathVariable(value = "showId") Long showId)
             throws ResourceNotFoundException {
-        Show show = showRepository.findById(showId)
-                .orElseThrow(() -> new ResourceNotFoundException(MESSAGE + showId));
 
-        return ResponseEntity.ok().body(show);
+        Show show = showService.getShowById(showId);
+        ShowDto showResponse = ShowConverter.convertEntityToDto(show);
+
+        return ResponseEntity.ok().body(showResponse);
     }
 
-    @PostMapping("/shows")
-    public Show createShow(@Valid @RequestBody Show show){
-        return showRepository.save(show);
+    @PostMapping("/show")
+    public ResponseEntity<ShowDto> createShow(@Valid @RequestBody ShowDto showDto){
+
+        Show showRequest = ShowConverter.convertDtoToEntity(showDto);
+        Show show = showService.createShow(showRequest);
+        ShowDto showResponse = ShowConverter.convertEntityToDto(show);
+
+        return new ResponseEntity<>(showResponse, HttpStatus.CREATED);
     }
 
-    @PutMapping("/shows/{showId}")
-    public ResponseEntity<Show> updateShow(@PathVariable(value = "showId") Long showId, @Valid @RequestBody Show showDetails)
-            throws ResourceNotFoundException {
-        Show show = showRepository.findById(showId)
-                .orElseThrow(() -> new ResourceNotFoundException(MESSAGE + showId));
+    @PutMapping("/show/{showId}")
+    public ResponseEntity<ShowDto> updateShow(@PathVariable(value = "showId") Long showId, @Valid @RequestBody ShowDto showDto) throws ResourceNotFoundException {
 
-        show.setDate(showDetails.getDate());
-        show.setStartTime(showDetails.getStartTime());
-        show.setEndTime(showDetails.getEndTime());
-        show.setCinemaHall(showDetails.getCinemaHall());
-        show.setMovie(showDetails.getMovie());
-        final Show updatedShow = showRepository.save(show);
+        Show showRequest = ShowConverter.convertDtoToEntity(showDto);
+        Show show = showService.updateShow(showId, showRequest);
+        ShowDto showResponse = ShowConverter.convertEntityToDto(show);
 
-        return ResponseEntity.ok(updatedShow);
+        return new ResponseEntity<>(showResponse, HttpStatus.OK);
     }
 
-    @DeleteMapping("/shows/{showId}")
-    public Map<String, Boolean> deleteShow(@PathVariable(value = "showId") Long showId)
-            throws ResourceNotFoundException {
-        Show show = showRepository.findById(showId)
-                .orElseThrow(() -> new ResourceNotFoundException(MESSAGE + showId));
+    @DeleteMapping("/show/{showId}")
+    public ResponseEntity<String> deleteShow(@PathVariable(value = "showId") Long showId) throws ResourceNotFoundException {
+        showService.deleteShow(showId);
 
-        showRepository.delete(show);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-
-        return response;
+        return ResponseEntity.ok().body("Show with ID(" + showId + ") deleted successfully");
     }
 }

@@ -1,17 +1,19 @@
 package edu.Binar.challenge.CinemaTicketReservation.controller;
 
+import edu.Binar.challenge.CinemaTicketReservation.converter.CinemaSeatConverter;
+import edu.Binar.challenge.CinemaTicketReservation.dto.CinemaSeatDto;
 import edu.Binar.challenge.CinemaTicketReservation.exception.ResourceNotFoundException;
 import edu.Binar.challenge.CinemaTicketReservation.model.CinemaSeat;
-import edu.Binar.challenge.CinemaTicketReservation.repository.CinemaSeatRepository;
+import edu.Binar.challenge.CinemaTicketReservation.service.CinemaSeatService;
 import lombok.Setter;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Setter
 @RestController
@@ -19,53 +21,48 @@ import java.util.Map;
 public class CinemaSeatController {
 
     @Autowired
-    private CinemaSeatRepository cinemaSeatRepository;
+    private CinemaSeatService cinemaSeatService;
 
     @GetMapping("/cinemaSeats/")
-    public List<CinemaSeat> getAllCinemaSeats() {
-        return cinemaSeatRepository.findAll();
+    public List<CinemaSeatDto> getAllCinemaSeats() {
+        return cinemaSeatService.getAllCinemaSeats().stream().map(cinemaSeat -> new ModelMapper().map(cinemaSeat, CinemaSeatDto.class))
+                .toList();
     }
 
-    public static final String MESSAGE = "CinemaSeat not found for this id :: ";
-
-    @GetMapping("/cinemaSeats/{cinemaSeatId}")
-    public ResponseEntity<CinemaSeat> getCinemaSeatById(@PathVariable(value = "cinemaSeatId") Long cinemaSeatId)
+    @GetMapping("/cinemaSeat/{cinemaSeatId}")
+    public ResponseEntity<CinemaSeatDto> getCinemaSeatById(@PathVariable(value = "cinemaSeatId") Long cinemaSeatId)
             throws ResourceNotFoundException {
-        CinemaSeat cinemaSeat = cinemaSeatRepository.findById(cinemaSeatId)
-                .orElseThrow(() -> new ResourceNotFoundException(MESSAGE + cinemaSeatId));
 
-        return ResponseEntity.ok().body(cinemaSeat);
+        CinemaSeat cinemaSeat = cinemaSeatService.getCinemaSeatById(cinemaSeatId);
+        CinemaSeatDto cinemaSeatResponse = CinemaSeatConverter.convertEntityToDto(cinemaSeat);
+
+        return ResponseEntity.ok().body(cinemaSeatResponse);
     }
 
-    @PostMapping("/cinemaSeats")
-    public CinemaSeat createCinemaSeat(@Valid @RequestBody CinemaSeat cinemaSeat){
-        return cinemaSeatRepository.save(cinemaSeat);
+    @PostMapping("/cinemaSeat")
+    public ResponseEntity<CinemaSeatDto> createCinemaSeat(@Valid @RequestBody CinemaSeatDto cinemaSeatDto){
+
+        CinemaSeat cinemaSeatRequest = CinemaSeatConverter.convertDtoToEntity(cinemaSeatDto);
+        CinemaSeat cinemaSeat = cinemaSeatService.createCinemaSeat(cinemaSeatRequest);
+        CinemaSeatDto cinemaSeatResponse = CinemaSeatConverter.convertEntityToDto(cinemaSeat);
+
+        return new ResponseEntity<>(cinemaSeatResponse, HttpStatus.CREATED);
     }
 
-    @PutMapping("/cinemaSeats/{cinemaSeatId}")
-    public ResponseEntity<CinemaSeat> updateCinemaSeat(@PathVariable(value = "cinemaSeatId") Long cinemaSeatId, @Valid @RequestBody CinemaSeat cinemaSeatDetails)
-            throws ResourceNotFoundException {
-        CinemaSeat cinemaSeat = cinemaSeatRepository.findById(cinemaSeatId)
-                .orElseThrow(() -> new ResourceNotFoundException(MESSAGE + cinemaSeatId));
+    @PutMapping("/cinemaSeat/{cinemaSeatId}")
+    public ResponseEntity<CinemaSeatDto> updateCinemaSeat(@PathVariable(value = "cinemaSeatId") Long cinemaSeatId, @Valid @RequestBody CinemaSeatDto cinemaSeatDto) throws ResourceNotFoundException {
 
-        cinemaSeat.setSeatNumber(cinemaSeatDetails.getSeatNumber());
-        cinemaSeat.setType(cinemaSeatDetails.getType());
-        cinemaSeat.setCinemaHall(cinemaSeatDetails.getCinemaHall());
-        final CinemaSeat updatedCinemaSeat = cinemaSeatRepository.save(cinemaSeat);
+        CinemaSeat cinemaSeatRequest = CinemaSeatConverter.convertDtoToEntity(cinemaSeatDto);
+        CinemaSeat cinemaSeat = cinemaSeatService.updateCinemaSeat(cinemaSeatId, cinemaSeatRequest);
+        CinemaSeatDto cinemaSeatResponse = CinemaSeatConverter.convertEntityToDto(cinemaSeat);
 
-        return ResponseEntity.ok(updatedCinemaSeat);
+        return new ResponseEntity<>(cinemaSeatResponse, HttpStatus.OK);
     }
 
-    @DeleteMapping("/cinemaSeats/{cinemaSeatId}")
-    public Map<String, Boolean> deleteCinemaSeat(@PathVariable(value = "cinemaSeatId") Long cinemaSeatId)
-            throws ResourceNotFoundException {
-        CinemaSeat cinemaSeat = cinemaSeatRepository.findById(cinemaSeatId)
-                .orElseThrow(() -> new ResourceNotFoundException(MESSAGE + cinemaSeatId));
+    @DeleteMapping("/cinemaSeat/{cinemaSeatId}")
+    public ResponseEntity<String> deleteCinemaSeat(@PathVariable(value = "cinemaSeatId") Long cinemaSeatId) throws ResourceNotFoundException {
+        cinemaSeatService.deleteCinemaSeat(cinemaSeatId);
 
-        cinemaSeatRepository.delete(cinemaSeat);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-
-        return response;
+        return ResponseEntity.ok().body("CinemaSeat with ID(" + cinemaSeatId + ") deleted successfully");
     }
 }

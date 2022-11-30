@@ -1,17 +1,19 @@
 package edu.Binar.challenge.CinemaTicketReservation.controller;
 
+import edu.Binar.challenge.CinemaTicketReservation.converter.PaymentConverter;
+import edu.Binar.challenge.CinemaTicketReservation.dto.PaymentDto;
 import edu.Binar.challenge.CinemaTicketReservation.exception.ResourceNotFoundException;
 import edu.Binar.challenge.CinemaTicketReservation.model.Payment;
-import edu.Binar.challenge.CinemaTicketReservation.repository.PaymentRepository;
+import edu.Binar.challenge.CinemaTicketReservation.service.PaymentService;
 import lombok.Setter;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Setter
 @RestController
@@ -19,54 +21,48 @@ import java.util.Map;
 public class PaymentController {
 
     @Autowired
-    private PaymentRepository paymentRepository;
+    private PaymentService paymentService;
 
     @GetMapping("/payments/")
-    public List<Payment> getAllPayments() {
-        return paymentRepository.findAll();
+    public List<PaymentDto> getAllPayments() {
+        return paymentService.getAllPayments().stream().map(payment -> new ModelMapper().map(payment, PaymentDto.class))
+                .toList();
     }
 
-    public static final String MESSAGE = "Payment not found for this id :: ";
-
-    @GetMapping("/payments/{paymentId}")
-    public ResponseEntity<Payment> getPaymentById(@PathVariable(value = "paymentId") Long paymentId)
+    @GetMapping("/payment/{paymentId}")
+    public ResponseEntity<PaymentDto> getPaymentById(@PathVariable(value = "paymentId") Long paymentId)
             throws ResourceNotFoundException {
-        Payment payment = paymentRepository.findById(paymentId)
-                .orElseThrow(() -> new ResourceNotFoundException(MESSAGE + paymentId));
 
-        return ResponseEntity.ok().body(payment);
+        Payment payment = paymentService.getPaymentById(paymentId);
+        PaymentDto paymentResponse = PaymentConverter.convertEntityToDto(payment);
+
+        return ResponseEntity.ok().body(paymentResponse);
     }
 
-    @PostMapping("/payments")
-    public Payment createPayment(@Valid @RequestBody Payment payment){
-        return paymentRepository.save(payment);
+    @PostMapping("/payment")
+    public ResponseEntity<PaymentDto> createPayment(@Valid @RequestBody PaymentDto paymentDto){
+
+        Payment paymentRequest = PaymentConverter.convertDtoToEntity(paymentDto);
+        Payment payment = paymentService.createPayment(paymentRequest);
+        PaymentDto paymentResponse = PaymentConverter.convertEntityToDto(payment);
+
+        return new ResponseEntity<>(paymentResponse, HttpStatus.CREATED);
     }
 
-    @PutMapping("/payments/{paymentId}")
-    public ResponseEntity<Payment> updatePayment(@PathVariable(value = "paymentId") Long paymentId, @Valid @RequestBody Payment paymentDetails)
-            throws ResourceNotFoundException {
-        Payment payment = paymentRepository.findById(paymentId)
-                .orElseThrow(() -> new ResourceNotFoundException(MESSAGE + paymentId));
+    @PutMapping("/payment/{paymentId}")
+    public ResponseEntity<PaymentDto> updatePayment(@PathVariable(value = "paymentId") Long paymentId, @Valid @RequestBody PaymentDto paymentDto) throws ResourceNotFoundException {
 
-        payment.setAmount(paymentDetails.getAmount());
-        payment.setTimeStamp(paymentDetails.getTimeStamp());
-        payment.setMethod(paymentDetails.getMethod());
-        payment.setBooking(paymentDetails.getBooking());
-        final Payment updatedPayment = paymentRepository.save(payment);
+        Payment paymentRequest = PaymentConverter.convertDtoToEntity(paymentDto);
+        Payment payment = paymentService.updatePayment(paymentId, paymentRequest);
+        PaymentDto paymentResponse = PaymentConverter.convertEntityToDto(payment);
 
-        return ResponseEntity.ok(updatedPayment);
+        return new ResponseEntity<>(paymentResponse, HttpStatus.OK);
     }
 
-    @DeleteMapping("/payments/{paymentId}")
-    public Map<String, Boolean> deletePayment(@PathVariable(value = "paymentId") Long paymentId)
-            throws ResourceNotFoundException {
-        Payment payment = paymentRepository.findById(paymentId)
-                .orElseThrow(() -> new ResourceNotFoundException(MESSAGE + paymentId));
+    @DeleteMapping("/payment/{paymentId}")
+    public ResponseEntity<String> deletePayment(@PathVariable(value = "paymentId") Long paymentId) throws ResourceNotFoundException {
+        paymentService.deletePayment(paymentId);
 
-        paymentRepository.delete(payment);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-
-        return response;
+        return ResponseEntity.ok().body("Payment with ID(" + paymentId + ") deleted successfully");
     }
 }

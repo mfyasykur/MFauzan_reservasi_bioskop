@@ -41,7 +41,10 @@ public class InvoiceController {
 
     @GetMapping
     public List<InvoiceDto> getAllInvoices(){
-        return invoiceService.getAllInvoices().stream().map(invoice -> modelMapper.map(invoice, InvoiceDto.class)).collect(Collectors.toList());
+        return invoiceService
+                .getAllInvoices()
+                .stream()
+                .map(invoice -> modelMapper.map(invoice, InvoiceDto.class)).toList();
     }
 
     @GetMapping("/find")

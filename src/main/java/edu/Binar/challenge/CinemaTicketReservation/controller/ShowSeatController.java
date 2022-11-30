@@ -1,17 +1,19 @@
 package edu.Binar.challenge.CinemaTicketReservation.controller;
 
+import edu.Binar.challenge.CinemaTicketReservation.converter.ShowSeatConverter;
+import edu.Binar.challenge.CinemaTicketReservation.dto.ShowSeatDto;
 import edu.Binar.challenge.CinemaTicketReservation.exception.ResourceNotFoundException;
 import edu.Binar.challenge.CinemaTicketReservation.model.ShowSeat;
-import edu.Binar.challenge.CinemaTicketReservation.repository.ShowSeatRepository;
+import edu.Binar.challenge.CinemaTicketReservation.service.ShowSeatService;
 import lombok.Setter;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Setter
 @RestController
@@ -19,55 +21,48 @@ import java.util.Map;
 public class ShowSeatController {
 
     @Autowired
-    private ShowSeatRepository showSeatRepository;
+    private ShowSeatService showSeatService;
 
     @GetMapping("/showSeats/")
-    public List<ShowSeat> getAllShowSeats() {
-        return showSeatRepository.findAll();
+    public List<ShowSeatDto> getAllShowSeats() {
+        return showSeatService.getAllShowSeats().stream().map(showSeat -> new ModelMapper().map(showSeat, ShowSeatDto.class))
+                .toList();
     }
 
-    public static final String MESSAGE = "ShowSeat not found for this id :: ";
-
-    @GetMapping("/showSeats/{showSeatId}")
-    public ResponseEntity<ShowSeat> getShowSeatById(@PathVariable(value = "showSeatId") Long showSeatId)
+    @GetMapping("/showSeat/{showSeatId}")
+    public ResponseEntity<ShowSeatDto> getShowSeatById(@PathVariable(value = "showSeatId") Long showSeatId)
             throws ResourceNotFoundException {
-        ShowSeat showSeat = showSeatRepository.findById(showSeatId)
-                .orElseThrow(() -> new ResourceNotFoundException(MESSAGE + showSeatId));
 
-        return ResponseEntity.ok().body(showSeat);
+        ShowSeat showSeat = showSeatService.getShowSeatById(showSeatId);
+        ShowSeatDto showSeatResponse = ShowSeatConverter.convertEntityToDto(showSeat);
+
+        return ResponseEntity.ok().body(showSeatResponse);
     }
 
-    @PostMapping("/showSeats")
-    public ShowSeat createShowSeat(@Valid @RequestBody ShowSeat showSeat){
-        return showSeatRepository.save(showSeat);
+    @PostMapping("/showSeat")
+    public ResponseEntity<ShowSeatDto> createShowSeat(@Valid @RequestBody ShowSeatDto showSeatDto){
+
+        ShowSeat showSeatRequest = ShowSeatConverter.convertDtoToEntity(showSeatDto);
+        ShowSeat showSeat = showSeatService.createShowSeat(showSeatRequest);
+        ShowSeatDto showSeatResponse = ShowSeatConverter.convertEntityToDto(showSeat);
+
+        return new ResponseEntity<>(showSeatResponse, HttpStatus.CREATED);
     }
 
-    @PutMapping("/showSeats/{showSeatId}")
-    public ResponseEntity<ShowSeat> updateShowSeat(@PathVariable(value = "showSeatId") Long showSeatId, @Valid @RequestBody ShowSeat showSeatDetails)
-            throws ResourceNotFoundException {
-        ShowSeat showSeat = showSeatRepository.findById(showSeatId)
-                .orElseThrow(() -> new ResourceNotFoundException(MESSAGE + showSeatId));
+    @PutMapping("/showSeat/{showSeatId}")
+    public ResponseEntity<ShowSeatDto> updateShowSeat(@PathVariable(value = "showSeatId") Long showSeatId, @Valid @RequestBody ShowSeatDto showSeatDto) throws ResourceNotFoundException {
 
-        showSeat.setStatus(showSeatDetails.getStatus());
-        showSeat.setPrice(showSeatDetails.getPrice());
-        showSeat.setCinemaSeat(showSeatDetails.getCinemaSeat());
-        showSeat.setShow(showSeatDetails.getShow());
-        showSeat.setBooking(showSeatDetails.getBooking());
-        final ShowSeat updatedShowSeat = showSeatRepository.save(showSeat);
+        ShowSeat showSeatRequest = ShowSeatConverter.convertDtoToEntity(showSeatDto);
+        ShowSeat showSeat = showSeatService.updateShowSeat(showSeatId, showSeatRequest);
+        ShowSeatDto showSeatResponse = ShowSeatConverter.convertEntityToDto(showSeat);
 
-        return ResponseEntity.ok(updatedShowSeat);
+        return new ResponseEntity<>(showSeatResponse, HttpStatus.OK);
     }
 
-    @DeleteMapping("/showSeats/{showSeatId}")
-    public Map<String, Boolean> deleteShowSeat(@PathVariable(value = "showSeatId") Long showSeatId)
-            throws ResourceNotFoundException {
-        ShowSeat showSeat = showSeatRepository.findById(showSeatId)
-                .orElseThrow(() -> new ResourceNotFoundException(MESSAGE + showSeatId));
+    @DeleteMapping("/showSeat/{showSeatId}")
+    public ResponseEntity<String> deleteShowSeat(@PathVariable(value = "showSeatId") Long showSeatId) throws ResourceNotFoundException {
+        showSeatService.deleteShowSeat(showSeatId);
 
-        showSeatRepository.delete(showSeat);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-
-        return response;
+        return ResponseEntity.ok().body("ShowSeat with ID(" + showSeatId + ") deleted successfully");
     }
 }
